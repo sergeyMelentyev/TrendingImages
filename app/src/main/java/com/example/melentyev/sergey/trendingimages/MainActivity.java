@@ -5,11 +5,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GetRawData.OnDownloadComplete {
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,9 @@ class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        GetRawData getRawData = new GetRawData(this);
+        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=android&tagmode=any&format=json&nojsoncallback=1");
     }
 
     @Override
@@ -37,10 +42,16 @@ class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
             return true;
-        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDownloadComplete(String data, DownloadStatus status) {
+        if (status == DownloadStatus.OK)
+            Log.d(TAG, "onDownloadComplete: data is: " + data);
+        else Log.e(TAG, "onDownloadComplete: data failed.");
     }
 }
