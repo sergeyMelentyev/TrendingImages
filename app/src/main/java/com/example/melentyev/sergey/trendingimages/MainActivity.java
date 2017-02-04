@@ -30,11 +30,15 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
                         .setAction("Action", null).show();
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         GetFlickrJsonData getFlickrJsonData =
                 new GetFlickrJsonData("https://api.flickr.com/services/feeds/photos_public.gne",
-                        this, "us-en", true);
-        getFlickrJsonData.executeOnSameThread("android");
+                        this, "en-us", true);
+        getFlickrJsonData.execute("death valley");
     }
 
     @Override
@@ -53,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
     }
 
     @Override
-    public void onDataAvailable(List<Photo> photos) {
-
+    public void onDataAvailable(List<Photo> photos, DownloadStatus status) {
+        for (Photo p : photos)
+            System.out.println(p.getmLink());
     }
 }

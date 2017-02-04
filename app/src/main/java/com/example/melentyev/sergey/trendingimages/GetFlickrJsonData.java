@@ -1,6 +1,7 @@
 package com.example.melentyev.sergey.trendingimages;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
+class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements GetRawData.OnDownloadComplete {
 
     private List<Photo> mPhotoList;
     private String mBaseUrl;
@@ -18,9 +19,10 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
     private boolean mMatchAll;
 
     private final OnDataAvailable mCallBack;
+    private boolean runningInSameThread = false;
 
     interface OnDataAvailable {
-        void onDataAvailable(List<Photo> photos);
+        void onDataAvailable(List<Photo> photos, DownloadStatus status);
     }
 
     public GetFlickrJsonData(String mBaseUrl, OnDataAvailable mCallBack, String mLanguage, boolean mMatchAll) {
@@ -31,11 +33,26 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
     }
 
     void executeOnSameThread(String searchCriteria) {
+        runningInSameThread = true;
         String destinationUri = createUri(searchCriteria, mLanguage, mMatchAll);
         GetRawData getRawData = new GetRawData(this);
-        getRawData.execute(destinationUri);
-
+        getRawData.runInSameThread(destinationUri);
     }
+
+    @Override
+    protected void onPostExecute(List<Photo> list) {
+        if (mCallBack != null)
+            mCallBack.onDataAvailable(list, DownloadStatus.OK);
+    }
+
+    @Override
+    protected List<Photo> doInBackground(String... params) {
+        String destinationUri = createUri(params[0], mLanguage, mMatchAll);
+        GetRawData getRawData = new GetRawData(this);
+        getRawData.runInSameThread(destinationUri);
+        return mPhotoList;
+    }
+
     private String createUri(String searchCriteria, String lang, boolean matchAll) {
         return Uri.parse(mBaseUrl).buildUpon()
                 .appendQueryParameter("tags", searchCriteria)
@@ -58,15 +75,18 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
                     String author = jsonPhoto.getString("author");
                     String authorId = jsonPhoto.getString("author_id");
                     String tags = jsonPhoto.getString("tags");
+
+                    JSONObject jsonMedia = jsonPhoto.getJSONObject("media");
+                    String photoUrl = jsonMedia.getString("m");
+                    String link = photoUrl.replaceFirst("_m.", "_h.");
+                    Photo photoObject = new Photo(title, author, authorId, link, tags, photoUrl);
+                    mPhotoList.add(photoObject);
                 }
             } catch (JSONException e) {
-
+                status = DownloadStatus.FAILED_OR_EMPTY;
             }
-            if (mCallBack != null)
-                mCallBack.onDataAvailable(mPhotoList);
         }
-        else {
-
-        }
+        if (runningInSameThread && mCallBack != null)
+            mCallBack.onDataAvailable(mPhotoList, status);
     }
 }
