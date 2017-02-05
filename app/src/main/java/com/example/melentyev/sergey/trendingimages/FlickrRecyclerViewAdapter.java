@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewAdapter.FlickrImageViewHolder> {
@@ -37,7 +39,11 @@ class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewA
 
     @Override
     public void onBindViewHolder(FlickrImageViewHolder holder, int position) {
-
+        // called by the layout manager when it wants new data in an existing row
+        Photo photoItem = mPhotosList.get(position);
+        Picasso.with(mContext).load(photoItem.getmImage()).error(R.drawable.place_holder)
+                .placeholder(R.drawable.place_holder).into(holder.thumbnail);
+        holder.title.setText(photoItem.getmTitle());
     }
 
     void loadNewData(List<Photo> newPhotos) {
