@@ -23,7 +23,7 @@ class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewA
 
     @Override
     public FlickrImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // called by the layout manager when it needs a new view
+        // inflate xml layout into view holder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.browse, parent, false);
         return new FlickrImageViewHolder(view);
     }
@@ -51,6 +51,7 @@ class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewA
         notifyDataSetChanged();
     }
 
+    // describe each view holder, bind each field with items id from xml
     static class FlickrImageViewHolder extends RecyclerView.ViewHolder {
         ImageView thumbnail = null;
         TextView title = null;
