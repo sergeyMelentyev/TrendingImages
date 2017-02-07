@@ -4,7 +4,13 @@
     tools:context="com.example.melentyev.sergey.trendingimages.MainActivity">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:title="@string/activity_search"
+        android:orderInCategory="102"
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="ifRoom" />
 </menu>

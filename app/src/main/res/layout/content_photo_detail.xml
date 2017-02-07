@@ -13,7 +13,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.melentyev.sergey.trendingimages.PhotoDetailActivity"
     tools:showIn="@layout/activity_photo_detail"
-    android:padding="8dp">
+    android:padding="2dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,39 +36,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="TextView"
                     android:fontFamily="sans-serif-condensed"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    tools:text="TextView" />
 
                 <ImageView
                     android:id="@+id/photo_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/place_holder"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/browse_image_description" />
 
                 <TextView
                     android:id="@+id/photo_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="TextView"
                     android:textAlignment="center"
                     android:textStyle="normal|bold"
                     android:textSize="18sp"
-                    android:fontFamily="sans-serif-condensed" />
+                    android:fontFamily="sans-serif-condensed"
+                    tools:text="TextView" />
 
                 <TextView
                     android:id="@+id/photo_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="TextView"
                     android:textAlignment="center"
                     android:textSize="12sp"
-                    android:fontFamily="sans-serif-condensed" />
+                    android:fontFamily="sans-serif-condensed"
+                    tools:text="TextView" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

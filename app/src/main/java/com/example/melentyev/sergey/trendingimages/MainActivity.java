@@ -54,8 +54,15 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings)
+        if (id == R.id.action_settings) {
+            Toast.makeText(MainActivity.this, "menu items goes here", Toast.LENGTH_SHORT).show();
             return true;
+        }
+        if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
