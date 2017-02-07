@@ -1,5 +1,6 @@
 package com.example.melentyev.sergey.trendingimages;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable,
+public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDataAvailable,
         RecyclerItemClickListener.OnRecyclerClickListener{
     public static final String TAG = "MainActivity";
     private FlickrRecyclerViewAdapter mFlickrRecyclerViewAdapter;
@@ -25,8 +26,7 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        activateToolBar(false);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,11 +68,13 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(MainActivity.this, "Normal tap at position" + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Long tap for bigger image", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onItemLongClick(View view, int position) {
-        Toast.makeText(MainActivity.this, "Long tap at position" + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, PhotoDetailActivity.class);
+        intent.putExtra(PHOTO_TRANSFER, mFlickrRecyclerViewAdapter.getPhoto(position));
+        startActivity(intent);
     }
 }
