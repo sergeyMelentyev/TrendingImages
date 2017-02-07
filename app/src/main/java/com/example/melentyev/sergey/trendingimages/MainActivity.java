@@ -1,14 +1,11 @@
 package com.example.melentyev.sergey.trendingimages;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,10 +36,15 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
     @Override
     protected void onResume() {
         super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String queryResult = sharedPreferences.getString(FLICKR_QUERY, "");
+
         GetFlickrJsonData getFlickrJsonData =
-                new GetFlickrJsonData("https://api.flickr.com/services/feeds/photos_public.gne",
-                        this, "en-us", true);
-        getFlickrJsonData.execute("death valley");
+                new GetFlickrJsonData("https://api.flickr.com/services/feeds/photos_public.gne", this, "en-us", true);
+        if (queryResult.length() == 0)
+            getFlickrJsonData.execute("death valley");
+        else getFlickrJsonData.execute(queryResult);
     }
 
     @Override
