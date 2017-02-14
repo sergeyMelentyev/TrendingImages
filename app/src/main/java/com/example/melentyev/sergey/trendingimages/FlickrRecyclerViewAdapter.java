@@ -16,7 +16,7 @@ class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewA
     private Context mContext;
     private List<Photo> mPhotosList;
 
-    public FlickrRecyclerViewAdapter(Context mContext, List<Photo> mPhotosList) {
+    FlickrRecyclerViewAdapter(Context mContext, List<Photo> mPhotosList) {
         this.mContext = mContext;
         this.mPhotosList = mPhotosList;
     }
@@ -33,7 +33,7 @@ class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewA
         return ((mPhotosList != null) && (mPhotosList.size() != 0) ? mPhotosList.size() : 0);
     }
 
-    public Photo getPhoto(int pos) {
+    Photo getPhoto(int pos) {
         return ((mPhotosList != null) && (mPhotosList.size() != 0) ? mPhotosList.get(pos) : null);
     }
 
@@ -56,7 +56,7 @@ class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewA
         ImageView thumbnail = null;
         TextView title = null;
 
-        public FlickrImageViewHolder(View itemView) {
+        FlickrImageViewHolder(View itemView) {
             super(itemView);
             this.thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
             this.title = (TextView) itemView.findViewById(R.id.title);
